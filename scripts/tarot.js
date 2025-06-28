@@ -18,7 +18,7 @@ Hooks.once("init", () => {
             "gpt-4o-mini": "gpt-4o-mini (Faster GPT-4, Recommended)",
             "gpt-4.1-nano": "gpt-4.1 (Fastest, most cost-effective GPT-4.1 model)"
         },
-        default: "gpt-4o-mini"
+        default: "gpt-3.5-turbo"
     });
 
     game.settings.register("hyp3e-character-oracle", "path.age", {
