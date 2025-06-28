@@ -1,5 +1,5 @@
 Hooks.once("init", () => {
-    game.settings.register("hyp3e-character-oracle", "openaiKey", {
+    game.settings.register("character-oracle", "openaiKey", {
         name: "OpenAI API Key",
         hint: "Enter your personal OpenAI API key",
         scope: "client",
@@ -7,7 +7,7 @@ Hooks.once("init", () => {
         type: String,
         default: ""
     });
-    game.settings.register("hyp3e-character-oracle", "openaiModel", {
+    game.settings.register("character-oracle", "openaiModel", {
         name: "OpenAI Model",
         hint: "Model to use with the OpenAI API (e.g., gpt-3.5-turbo, gpt-4o-mini, gpt-4.1-nano)",
         scope: "world",
@@ -21,7 +21,7 @@ Hooks.once("init", () => {
         default: "gpt-3.5-turbo"
     });
 
-    game.settings.register("hyp3e-character-oracle", "path.age", {
+    game.settings.register("character-oracle", "path.age", {
         name: "Character Age Path",
         hint: "Data path to the character's age (e.g., system.details.age)",
         scope: "world",
@@ -29,7 +29,7 @@ Hooks.once("init", () => {
         type: String,
         default: "system.details.age"
     });
-    game.settings.register("hyp3e-character-oracle", "path.gender", {
+    game.settings.register("character-oracle", "path.gender", {
         name: "Character Gender Path",
         hint: "Data path to the character's sex/gender (e.g., system.details.gender)",
         scope: "world",
@@ -37,7 +37,7 @@ Hooks.once("init", () => {
         type: String,
         default: "system.details.gender"
     });
-    game.settings.register("hyp3e-character-oracle", "path.origin", {
+    game.settings.register("character-oracle", "path.origin", {
         name: "Character Race/Ancestry Path",
         hint: "Data path to the character's racial origin or ancestry (e.g., system.details.race)",
         scope: "world",
@@ -45,7 +45,7 @@ Hooks.once("init", () => {
         type: String,
         default: "system.details.race"
     });
-    game.settings.register("hyp3e-character-oracle", "path.charClass", {
+    game.settings.register("character-oracle", "path.charClass", {
         name: "Character Class Path",
         hint: "Data path to the character's class or profession (e.g., system.details.class)",
         scope: "world",
@@ -53,7 +53,7 @@ Hooks.once("init", () => {
         type: String,
         default: "system.details.class"
     });
-    game.settings.register("hyp3e-character-oracle", "path.biography", {
+    game.settings.register("character-oracle", "path.biography", {
         name: "Character Biography Path",
         hint: "Data path to the character's biography or personality (e.g., system.biography)",
         scope: "world",
@@ -69,7 +69,7 @@ Hooks.once("ready", () => {
     };
 
     // Optional: add to UI
-    game.settings.registerMenu("hyp3e-character-oracle", "openForm", {
+    game.settings.registerMenu("character-oracle", "openForm", {
         name: "Character Oracle",
         label: "Open Oracle",
         icon: "fas fa-id-card",
@@ -226,7 +226,7 @@ class TarotForm extends FormApplication {
         return mergeObject(super.defaultOptions, {
             id: "tarot-form",
             title: "Character Oracle",
-            template: "modules/hyp3e-character-oracle/templates/tarot-form.html",
+            template: "modules/character-oracle/templates/tarot-form.html",
             width: 400
         });
     }
@@ -239,7 +239,7 @@ class TarotForm extends FormApplication {
         const data = await super.getData();
         const actor = this.actor;
 
-        const path = (name) => game.settings.get("hyp3e-character-oracle", `path.${name}`);
+        const path = (name) => game.settings.get("character-oracle", `path.${name}`);
 
         if (actor) {
             data.name = actor.name;
@@ -261,8 +261,8 @@ class TarotForm extends FormApplication {
 
         try {
             // OpenAI API call
-            const openaiKey = game.settings.get("hyp3e-character-oracle", "openaiKey");
-            const model = game.settings.get("hyp3e-character-oracle", "openaiModel");
+            const openaiKey = game.settings.get("character-oracle", "openaiKey");
+            const model = game.settings.get("character-oracle", "openaiModel");
 
             // Format the prompt
             const prompt = this.buildPrompt(formData);
@@ -297,7 +297,7 @@ class TarotForm extends FormApplication {
 
             // Save to actor biography if requested
             if (formData.saveToBio && this.actor) {
-                const biographyPath = game.settings.get("hyp3e-character-oracle", "path.biography");
+                const biographyPath = game.settings.get("character-oracle", "path.biography");
                 const current = foundry.utils.getProperty(this.actor, biographyPath) ?? "";
                 const separator = `<hr><p><em>Generated on ${new Date().toLocaleDateString()}</em></p>`;
                 const newBio = `${current}${separator}${formatted}`;
