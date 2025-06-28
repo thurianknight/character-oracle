@@ -2,7 +2,7 @@
     "id": "hyp3e-character-oracle",
     "title": "Hyperborea Character Personality Oracle",
     "description": "Generates Hyperborea character personalities using tarot readings via OpenAI.",
-    "version": "0.9.10",
+    "version": "0.9.11",
     "authors": [
         {
             "name": "ThurianKnight",
@@ -13,12 +13,22 @@
     "compatibility": {
         "minimum": "12",
         "verified": "13.346",
-        "maximum": 13
+        "maximum": "13"
     },
     "relationships": {
         "systems": [
             {
                 "id": "hyp3e",
+                "type": "system",
+                "compatibility": {}
+            },
+            {
+                "id": "acks",
+                "type": "system",
+                "compatibility": {}
+            },
+            {
+                "id": "wwn",
                 "type": "system",
                 "compatibility": {}
             }

@@ -22,36 +22,44 @@ Hooks.once("init", () => {
     });
 
     game.settings.register("hyp3e-character-oracle", "path.age", {
-        name: "Actor Age Path",
-        hint: "Data path to the actor's age (e.g., system.details.age)",
+        name: "Character Age Path",
+        hint: "Data path to the character's age (e.g., system.details.age)",
         scope: "world",
         config: true,
         type: String,
         default: "system.details.age"
     });
     game.settings.register("hyp3e-character-oracle", "path.gender", {
-        name: "Actor Gender Path",
-        hint: "Data path to the actor's sex/gender (e.g., system.details.gender)",
+        name: "Character Gender Path",
+        hint: "Data path to the character's sex/gender (e.g., system.details.gender)",
         scope: "world",
         config: true,
         type: String,
         default: "system.details.gender"
     });
     game.settings.register("hyp3e-character-oracle", "path.origin", {
-        name: "Actor Race/Ancestry Path",
-        hint: "Data path to the actor's racial origin or ancestry (e.g., system.details.origin)",
+        name: "Character Race/Ancestry Path",
+        hint: "Data path to the character's racial origin or ancestry (e.g., system.details.race)",
         scope: "world",
         config: true,
         type: String,
         default: "system.details.race"
     });
     game.settings.register("hyp3e-character-oracle", "path.charClass", {
-        name: "Actor Class Path",
-        hint: "Data path to the actor's class or profession (e.g., system.class.label)",
+        name: "Character Class Path",
+        hint: "Data path to the character's class or profession (e.g., system.details.class)",
         scope: "world",
         config: true,
         type: String,
         default: "system.details.class"
+    });
+    game.settings.register("hyp3e-character-oracle", "path.biography", {
+        name: "Character Biography Path",
+        hint: "Data path to the character's biography or personality (e.g., system.biography)",
+        scope: "world",
+        config: true,
+        type: String,
+        default: "system.biography"
     });
 });
 
@@ -239,6 +247,7 @@ class TarotForm extends FormApplication {
             data.gender = this.getValueAtPath(actor, path("gender")) ?? "";
             data.origin = this.getValueAtPath(actor, path("origin")) ?? "";
             data.charClass = this.getValueAtPath(actor, path("charClass")) ?? "";
+            data.biography = this.getValueAtPath(actor, path("biography")) ?? "";
             data.tone = "";
         }
         data.saveToBio = false;
@@ -288,10 +297,13 @@ class TarotForm extends FormApplication {
 
             // Save to actor biography if requested
             if (formData.saveToBio && this.actor) {
-                const current = this.actor.system.details?.biography ?? "";
+                const biographyPath = game.settings.get("hyp3e-character-oracle", "path.biography");
+                const current = foundry.utils.getProperty(this.actor, biographyPath) ?? "";
                 const separator = `<hr><p><em>Generated on ${new Date().toLocaleDateString()}</em></p>`;
                 const newBio = `${current}${separator}${formatted}`;
-                await this.actor.update({ "system.biography": newBio });
+                const updateData = {};
+                foundry.utils.setProperty(updateData, biographyPath, newBio);
+                await this.actor.update(updateData);
                 ui.notifications.info("Tarot result added to biography.");
             }
         } catch (err) {
