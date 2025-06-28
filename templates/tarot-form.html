@@ -1,0 +1,41 @@
+<div class="oracle-wait-overlay" style="display: none;">
+    <div class="oracle-wait-text">Querying the Oracle<span class="dots">...</span></div>
+</div>
+<form>
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" value="{{name}}" />
+    </div>
+    <div class="form-group">
+        <label>Gender</label>
+        <input type="text" name="gender" value="{{gender}}" />
+    </div>
+    <div class="form-group">
+        <label>Age</label>
+        <input type="text" name="age" value="{{age}}" />
+    </div>
+    <div class="form-group">
+        <label>Ancestry / Culture</label>
+        <input type="text" name="origin" value="{{origin}}" />
+    </div>
+    <div class="form-group">
+        <label>Class</label>
+        <input type="text" name="charClass" value="{{charClass}}" />
+    </div>
+    <div class="form-group">
+        <label>Tone / Theme (optional)</label>
+        <input type="text" name="tone" value="{{tone}}" placeholder="E.g., brooding, cheerful, survivor of trauma, etc." />
+        <p class="hint">Suggested tones: grim and stoic, cheerful and naive, sardonic trickster, haunted by loss, bloodthirsty warrior, secretive mystic, cursed legacy.</p>
+    </div>
+
+    <div class="form-group">
+    <label>
+        <input type="checkbox" name="saveToBio" />
+        Save result to biography
+    </label>
+    </div>
+
+    <footer class="sheet-footer flexrow">
+        <button type="submit" class="dialog-button default">Speak the Oracle</button>
+    </footer>
+</form>
