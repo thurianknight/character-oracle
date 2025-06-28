@@ -2,7 +2,7 @@
 
 **A tarot-inspired character personality generator for the Hyperborea TTRPG, powered by OpenAI.**
 
-This Foundry VTT module uses symbolic tarot draws interpreted by GPT to generate evocative, immersive personality descriptions for newly created characters in the world of Hyperborea.
+This Foundry VTT module uses symbolic tarot draws interpreted by ChatGPT to generate evocative, immersive personality descriptions for newly created characters in the world of Hyperborea.
 
 ---
 
@@ -40,10 +40,10 @@ https://github.com/thurianknight/hyp3e-character-oracle/releases/latest/download
 ## Usage
 
 1. Open a character sheet (actor).
-2. Click the **“Character Oracle”** button.
-3. Fill in basic details (age, sex, origin, class, tone).
-4. Click **Generate Personality**.
-5. Optionally save the result to the biography tab.
+2. Click the **“Character Oracle”** button in the title bar of the sheet.
+3. Verify in basic details (age, gender, race/ancestry, character class, tone).
+4. Optionally save the result to the biography field.
+5. Click **Speak the Oracle**.
 
 You’ll see a temporary overlay while the oracle is consulted. Within a few seconds, your character will receive a rich, personalized profile drawn from the mists of Hyperborea.
 
@@ -54,8 +54,8 @@ You’ll see a temporary overlay while the oracle is consulted. Within a few sec
 In **Module Settings**, you can:
 
 - Set your OpenAI API key.
-- Choose which model to use (e.g., `gpt-3.5-turbo` or `gpt-4`).
-- Control whether output is automatically added to the actor biography.
+- Choose which model to use (e.g., `gpt-3.5-turbo` or `gpt-4o-mini`).
+- Update the data paths to character info fields, useful for other systems.
 
 ---
 
@@ -76,4 +76,4 @@ Inspired by the eerie magic of Hyperborea and the ancient symbols of the tarot.
 
 ## License
 
-MIT License
+[MIT License](/LICENSE)
