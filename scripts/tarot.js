@@ -5,7 +5,8 @@ Hooks.once("init", () => {
         scope: "world",
         config: true,
         type: String,
-        default: ""
+        isSecret: true,
+        default: "sk-..."
     });
     game.settings.register("character-oracle", "openaiModel", {
         name: "OpenAI Model",
