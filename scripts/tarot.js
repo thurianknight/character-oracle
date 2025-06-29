@@ -99,7 +99,7 @@ Hooks.on("renderActorSheet", (sheet, html, data) => {
         game.hyp3eCharacterOracle?.showForm(sheet.actor);
     });
 
-    // Insert into sheet header (or change to sidebar if you prefer)
+    // Insert into sheet header
     const titleElement = html.closest('.app').find('.window-title');
     if (titleElement.length) {
         titleElement.after(button);
