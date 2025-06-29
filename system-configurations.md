@@ -21,6 +21,13 @@
 - Class: system.details.class
 - Biography: system.details.biography
 
+## Old School Essentials (ose)
+- Age: 
+- Gender: 
+- Race: 
+- Class: system.details.class
+- Biography: system.details.biography
+
 ## Pathfinder 2nd Edition (pf2e)
 - Age: system.details.age.value
 - Gender: system.details.gender.value
