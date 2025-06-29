@@ -2,7 +2,7 @@
 
 **A tarot-inspired character personality generator, powered by OpenAI.**
 
-This Foundry VTT module uses symbolic tarot draws interpreted by ChatGPT to generate evocative, immersive personality descriptions for newly created characters. Original created for the [Hyperborea 3rd Edition](https://hyperborea.tv) role-playing game, but is configurable for just about any game system that has character attributes like age, gender/sex, race/ancestry, and class/profession. All fields are optional, but they are used by ChatGPT to give more flavor and detail to the oracle.
+This Foundry VTT module uses symbolic tarot draws interpreted by ChatGPT to generate evocative, immersive personality descriptions for newly created characters. Originally created for the [Hyperborea 3rd Edition](https://hyperborea.tv) role-playing game, but is configurable for just about any game system that has character attributes like age, gender/sex, race/ancestry, and class/profession. All fields are optional, but they are used by ChatGPT to give more flavor and detail to the oracle.
 
 ---
 
