@@ -2,7 +2,7 @@ Hooks.once("init", () => {
     game.settings.register("character-oracle", "openaiKey", {
         name: "OpenAI API Key",
         hint: "Enter your personal OpenAI API key",
-        scope: "client",
+        scope: "world",
         config: true,
         type: String,
         default: ""
