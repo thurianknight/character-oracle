@@ -20,7 +20,7 @@ This Foundry VTT module uses symbolic tarot draws interpreted by ChatGPT to gene
 ## Requirements
 
 - Foundry VTT v12 or v13.
-- An [OpenAI](https://platform.openai.com/) API key (you must supply your own).
+- An [OpenAI](https://platform.openai.com/) API key (you must supply your own, available [here](https://platform.openai.com)).
 - Internet connection (for API calls).
 
 ---
@@ -29,11 +29,21 @@ This Foundry VTT module uses symbolic tarot draws interpreted by ChatGPT to gene
 
 To install manually:
 
-1. Download the latest release from:
-   [https://github.com/thurianknight/character-oracle/releases/latest](https://github.com/thurianknight/character-oracle/releases/latest)
-2. Extract into your Foundry `modules/` directory.
-3. Or install via manifest URL:
+1. Install from the Foundry VTT module browser with the search term `character oracle`.
+1. Or install via manifest URL:
 https://github.com/thurianknight/character-oracle/releases/latest/download/module.json
+1. Or, manually download the latest release from:
+   [https://github.com/thurianknight/character-oracle/releases/latest](https://github.com/thurianknight/character-oracle/releases/latest), and extract into your Foundry `modules/` directory.
+
+---
+
+## Configuration
+
+In **Module Settings**, you can:
+
+- Set your OpenAI API key.
+- Choose which model to use (e.g., `gpt-3.5-turbo` or `gpt-4o-mini`).
+- Update the data paths to character info fields, usable with most game systems. Known-working system configurations can be found in [system-configurations.md](/system-configurations.md).
 
 ---
 
@@ -49,20 +59,10 @@ You’ll see a temporary overlay while the oracle is consulted. Within a few sec
 
 ---
 
-## Configuration
-
-In **Module Settings**, you can:
-
-- Set your OpenAI API key.
-- Choose which model to use (e.g., `gpt-3.5-turbo` or `gpt-4o-mini`).
-- Update the data paths to character info fields, useful for most game systems.
-
----
-
 ## Development Status
 
 - ✅ Core features complete and working in Hyperborea system (`hyp3e`).
-- ✅ Additionally tested with Adventurer-Conqueror-King System (`acks`) and Worlds Without Number (`wwn`). Known-working system configurations can be found in [system-configurations.md](/system-configurations.md).
+  - ✅ Additionally tested with Adventurer-Conqueror-King System (`acks`), Worlds Without Number (`wwn`), Old School Essentials (`ose`), and Pathfinder 2nd Edition (`pf2e`).
 - 🚧 Localization planned.
 - 💬 Accepting feedback and suggestions via GitHub issues.
 
