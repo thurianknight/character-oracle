@@ -14,13 +14,6 @@
 - Class: system.details.class
 - Biography: system.details.description
 
-## Worlds Without Number (wwn)
-- Age: 
-- Gender: 
-- Race: system.details.background
-- Class: system.details.class
-- Biography: system.details.biography
-
 ## Old School Essentials (ose)
 - Age: 
 - Gender: 
@@ -34,6 +27,13 @@
 - Race: system.details.ancestry.name
 - Class: system.details.class.name
 - Biography: system.details.biography.backstory
+
+## Worlds Without Number (wwn)
+- Age: 
+- Gender: 
+- Race: system.details.background
+- Class: system.details.class
+- Biography: system.details.biography
 
 ## D&D 5E (dnd5e)
 - Partial compatibility: integration with the character sheet does not work. However a player can still manually populate the character information and get an oracle, then copy/paste that into their sheet.
