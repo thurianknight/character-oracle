@@ -72,7 +72,7 @@ Hooks.once("ready", () => {
     // Optional: add to UI
     game.settings.registerMenu("character-oracle", "openForm", {
         name: "Character Oracle",
-        label: "Open Oracle",
+        label: "Test the Oracle",
         icon: "fas fa-id-card",
         type: TarotForm,
         restricted: false
