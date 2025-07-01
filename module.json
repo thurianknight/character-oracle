@@ -2,7 +2,7 @@
     "id": "character-oracle",
     "title": "Character Personality Oracle",
     "description": "Generates character personalities using tarot readings via OpenAI.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "ThurianKnight",
