@@ -21,6 +21,14 @@ Hooks.once("init", () => {
         },
         default: "gpt-3.5-turbo"
     });
+    game.settings.register("character-oracle", "showWelcomeMessage", {
+        name: "Show Welcome Message on World Load",
+        hint: "Show a quick-start guide in the chat log each time the world loads.",
+        scope: "client",
+        config: true,
+        default: true,
+        type: Boolean
+    });
 
     game.settings.register("character-oracle", "path.age", {
         name: "Character Age Path",
@@ -64,18 +72,53 @@ Hooks.once("init", () => {
     });
 });
 
-Hooks.once("ready", () => {
+Hooks.once("ready", async () => {
     game.hyp3eCharacterOracle = {
         showForm: (actor = null) => new TarotForm(actor).render(true)
     };
 
-    // Optional: add to UI
+    // Optional: add to config UI
     game.settings.registerMenu("character-oracle", "openForm", {
         name: "Character Oracle",
         label: "Test the Oracle",
         icon: "fas fa-id-card",
         type: TarotForm,
         restricted: false
+    });
+
+    // Show welcome message in chat, if enabled
+    const shouldShow = game.settings.get("character-oracle", "showWelcomeMessage");
+    if (!shouldShow) return;
+
+    let gm_content = ""
+    let all_content = "<h2>🃏 Character Personality Oracle</h2>";
+
+    if (game.user.isGM) {
+        gm_content = `
+            <p><strong>Configuration:</strong><br>
+            In <em>Module Settings</em>, you can:
+            <ul>
+            <li>Set your OpenAI API key.</li>
+            <li>Choose which model to use (e.g., <code>gpt-3.5-turbo</code>, <code>gpt-4o-mini</code>).</li>
+            <li>Update the data paths to character info fields.</li>
+            <li>Refer to <a href='https://github.com/thurianknight/character-oracle/blob/main/system-configurations.md'>system-configurations.md</a> for known system mappings.</li>
+            </ul></p>`
+    }
+    all_content += gm_content + `
+        <p><strong>Usage:</strong><br>
+        <ul>
+        <li>Open a character sheet (Actor).</li>
+        <li>Click the <strong>“Character Oracle”</strong> button in the title bar.</li>
+        <li>Verify or fill in basic details (age, gender, ancestry, class, tone).</li>
+        <li>Click <strong>Speak the Oracle</strong>.</li>
+        </ul>
+        <p>The result is a personalized, flavorful character profile drawn from the mists of Hyperborea... or whatever world your character may dwell in.</p>
+    `;
+
+    ChatMessage.create({
+        user: game.user.id,
+        whisper: [game.user.id],
+        content: all_content
     });
 
 });
