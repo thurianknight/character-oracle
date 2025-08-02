@@ -123,19 +123,60 @@ Hooks.once("ready", async () => {
 
 });
 
-Hooks.on("renderActorSheet", (sheet, html, data) => {
+Hooks.on("renderActorSheet", async (sheet, html, data) => {
     // Only for type "character"
     if (sheet.actor?.type !== "character") return;
+    // Skip if the sheet is minimized
+    if (sheet.minimized) return;
 
-    // Avoid adding the button multiple times
+    // Avoid adding a button multiple times
     const existing = html.closest('.app').find('.character-oracle');
     if (existing.length) return;
 
+    // Check if the oracle has been used before
+    const oracleUsed = await sheet.actor?.getFlag("character-oracle", "oracleUsed");
+    if (oracleUsed) {
+        // If oracle has been used before, show a reset button
+        await this.addOracleReset(sheet, html);
+        return;
+    } else {
+        // If it hasn't been used before, add the main oracle button
+        await this.addOracleButton(sheet, html);
+    }
+});
+
+async function addOracleReset(sheet, html) {
+    console.log("Adding Character Oracle reset button to character sheet");
     // Create the button
-    const button = $(`<a class="character-oracle"><i class="fas fa-id-card-alt"></i> 
-        <span title="Generate tarot-based personality for this character">Character Oracle</span>
-        </a>`);
-    button.css({ margin: "5px 0", display: "inline-block" });
+    const resetButton = $(
+        `<a class="character-oracle">
+        <i class="fas fa-id-card-alt" title="Reset Character Oracle"></i></a>`
+    );
+    resetButton.css({ margin: "5px 5px", display: "inline-block" });
+
+    // Handle button click
+    resetButton.on("click", async () => {
+        await sheet.actor?.unsetFlag("character-oracle", "oracleUsed");
+        sheet.render();
+        ui.notifications.info("Character Oracle reset. You can now generate a new personality.");
+    });
+
+    // Insert into sheet header
+    const titleElement = html.closest('.app').find('.window-title');
+    if (titleElement.length) {
+        titleElement.after(resetButton);
+    }
+}
+
+function addOracleButton(sheet, html) {
+    console.log("Adding Character Oracle button to character sheet");
+    // Create the button
+    const button = $(
+        `<a class="character-oracle">
+        <i class="fas fa-id-card-alt" title="Generate tarot-based personality for this character"></i> 
+        <span title="Generate tarot-based personality for this character">Character Oracle</span></a>`
+    );
+    button.css({ margin: "5px 5px", display: "inline-block" });
 
     // Handle button click
     button.on("click", () => {
@@ -147,7 +188,7 @@ Hooks.on("renderActorSheet", (sheet, html, data) => {
     if (titleElement.length) {
         titleElement.after(button);
     }
-});
+}
 
 const TAROT_DECK = [
     // Major Arcana (22 cards)
@@ -338,6 +379,9 @@ class TarotForm extends FormApplication {
                 content: `<div style="white-space: normal;">${formatted}</div>`,
                 buttons: { ok: { label: "OK" } }
             }).render(true);
+
+            // Mark the Oracle as used
+            await this.actor?.setFlag("character-oracle", "oracleUsed", true);
 
             // Save to actor biography if requested
             if (formData.saveToBio && this.actor) {
