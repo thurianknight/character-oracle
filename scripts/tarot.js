@@ -1,4 +1,24 @@
+/**
+ * Universal actor sheet render hook for both ApplicationV1 and ApplicationV2.
+ *
+ * @param {Function} callback - Function that receives (app, html)
+ *                              when an actor sheet finishes rendering.
+ */
+function onAnyActorSheetRendered(callback) {
+    // For legacy (Application V1)
+    Hooks.on("renderActorSheet", (app, html) => {
+        callback(app, html);
+    });
+
+    // For new (Application V2)
+    Hooks.on("renderActorSheetV2", (app, html) => {
+        callback(app, html);
+    });
+}
+
 Hooks.once("init", () => {
+    console.log("[Character Oracle] Initializing module...");
+
     game.settings.register("character-oracle", "openaiKey", {
         name: "OpenAI API Key",
         hint: "Enter your personal OpenAI API key",
@@ -29,7 +49,6 @@ Hooks.once("init", () => {
         default: true,
         type: Boolean
     });
-
     game.settings.register("character-oracle", "path.age", {
         name: "Character Age Path",
         hint: "Data path to the character's age (e.g., system.details.age)",
@@ -73,11 +92,23 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", async () => {
+    console.log("[Character Oracle] Ready and waiting for actor sheets...");
+
     game.hyp3eCharacterOracle = {
         showForm: (actor = null) => new TarotForm(actor).render(true)
     };
 
-    // Optional: add to config UI
+    // NEW (works for both V1 and V2)
+    onAnyActorSheetRendered(async (app, html) => {
+        if (app.actor?.type !== "character") return;
+        await insertOracleButton(app, html);
+    });
+
+    // Testing these hooks...
+    Hooks.on('renderDocumentSheetV2', (app, element) => console.log("[Character Oracle] Hook 'renderDocumentSheetV2' fired.", app, element));
+    Hooks.on('getActorSheetHeaderButtons', (sheet, buttons) => console.log("[Character Oracle] Hook 'getActorSheetHeaderButtons' fired.", sheet, buttons)); // v12 and prior
+
+    // Add to Foundry config UI
     game.settings.registerMenu("character-oracle", "openForm", {
         name: "Character Oracle",
         label: "Test the Oracle",
@@ -120,76 +151,72 @@ Hooks.once("ready", async () => {
         whisper: [game.user.id],
         content: all_content
     });
-
 });
 
-Hooks.on("renderActorSheet", async (sheet, html, data) => {
+async function insertOracleButton(app, html) {
+    console.log("[Character Oracle] Actor sheet rendering...", app, html)
     // Only for type "character"
-    if (sheet.actor?.type !== "character") return;
-    // Skip if the sheet is minimized
-    if (sheet.minimized) return;
+    if (app.actor?.type !== "character") return;
 
     // Avoid adding a button multiple times
-    const existing = html.closest('.app').find('.character-oracle');
+    const titleBar = html.closest('.app') || html.closest('.application')
+    if (!titleBar) return;
+    const existing = $(titleBar).find('.character-oracle');
     if (existing.length) return;
 
-    // Check if the oracle has been used before
-    const oracleUsed = await sheet.actor?.getFlag("character-oracle", "oracleUsed");
-    if (oracleUsed) {
-        // If oracle has been used before, show a reset button
-        await this.addOracleReset(sheet, html);
-        return;
-    } else {
-        // If it hasn't been used before, add the main oracle button
-        await this.addOracleButton(sheet, html);
-    }
-});
-
-async function addOracleReset(sheet, html) {
-    console.log("Adding Character Oracle reset button to character sheet");
-    // Create the button
-    const resetButton = $(
-        `<a class="character-oracle">
-        <i class="fas fa-id-card-alt" title="Reset Character Oracle"></i></a>`
-    );
-    resetButton.css({ margin: "5px 5px", display: "inline-block" });
-
-    // Handle button click
-    resetButton.on("click", async () => {
-        await sheet.actor?.unsetFlag("character-oracle", "oracleUsed");
-        sheet.render();
-        ui.notifications.info("Character Oracle reset. You can now generate a new personality.");
-    });
-
-    // Insert into sheet header
-    const titleElement = html.closest('.app').find('.window-title');
-    if (titleElement.length) {
-        titleElement.after(resetButton);
-    }
+    // Add the oracle button to the title bar
+    await this.addOracleButton(app, html);
 }
 
-function addOracleButton(sheet, html) {
-    console.log("Adding Character Oracle button to character sheet");
-    // Create the button
-    const button = $(
-        `<a class="character-oracle">
-        <i class="fas fa-id-card-alt" title="Generate tarot-based personality for this character"></i> 
-        <span title="Generate tarot-based personality for this character">Character Oracle</span></a>`
-    );
-    button.css({ margin: "5px 5px", display: "inline-block" });
+function addOracleButton(app, html) {
+    console.log("[Character Oracle] Adding Character Oracle button to character sheet");
 
-    // Handle button click
-    button.on("click", () => {
-        game.hyp3eCharacterOracle?.showForm(sheet.actor);
-    });
+    let button;
+
+    if (app instanceof foundry.applications.api.ApplicationV2) {
+        // Configure the button for AppV2
+        button = document.createElement('button');
+        button.type = "button";
+        button.classList.add('header-control', 'fas', 'fa-id-card-alt', 'character-oracle', 'icon');
+        button.dataset.tooltip = "Generate tarot-based personality";
+        // Handle the button click event
+        button.dataset.action = "showForm";
+        console.log("[Character Oracle] App V2 button:", button);
+        app.options.actions.showForm ??= function (_event, _el) {
+            game.hyp3eCharacterOracle?.showForm(app.actor);
+        };
+    } else {
+        // Configure the button for AppV1
+        button = document.createElement('a');
+        // button.classList.add('header-button', 'control', 'character-oracle', 'icon');
+        button.classList.add('control', 'character-oracle', 'icon');
+        button.dataset.tooltip = "Generate tarot-based personality";
+        // Add a Font-Awesome icon to the button
+        const i = document.createElement('i');
+        i.classList.add('fas', 'fa-id-card-alt');
+        i.inert = true;
+        button.append(i);
+        // Handle the button click event
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            game.hyp3eCharacterOracle?.showForm(app.actor);
+        });
+    }
 
     // Insert into sheet header
-    const titleElement = html.closest('.app').find('.window-title');
+    const titleBar = html.closest('.app') || html.closest('.application');
+    if (!titleBar) return;
+    const titleElement = $(titleBar).find('.window-title');
     if (titleElement.length) {
         titleElement.after(button);
     }
 }
 
+/**
+ * Data for a full 74-card Tarot deck
+ */
 const TAROT_DECK = [
     // Major Arcana (22 cards)
     { name: "The Fool", arcana: "Major" },
@@ -308,7 +335,7 @@ class TarotForm extends FormApplication {
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             id: "tarot-form",
             title: "Character Oracle",
             template: "modules/character-oracle/templates/tarot-form.html",
@@ -367,7 +394,7 @@ class TarotForm extends FormApplication {
 
             const json = await response.json();
             if (!response.ok) {
-                console.error("OpenAI API error:", json);
+                console.error("[Character Oracle] OpenAI API error:", json);
                 ui.notifications.error(`OpenAI API Error: ${json.error?.message}`);
                 return;
             }
@@ -396,7 +423,7 @@ class TarotForm extends FormApplication {
             }
         } catch (err) {
             ui.notifications.error("Error querying the Oracle.");
-            console.error(err);
+            console.error("[Character Oracle]", err);
         } finally {
             overlay.hide();
         }
