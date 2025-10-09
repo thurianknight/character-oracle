@@ -95,7 +95,7 @@ Hooks.once("ready", async () => {
     console.log("[Character Oracle] Ready and waiting for actor sheets...");
 
     game.hyp3eCharacterOracle = {
-        showForm: (actor = null) => new TarotForm(actor).render(true)
+        showOracleForm: (actor = null) => new TarotForm(actor).render(true)
     };
 
     // NEW (works for both V1 and V2)
@@ -180,10 +180,10 @@ function addOracleButton(app, html) {
         button.classList.add('header-control', 'fas', 'fa-id-card-alt', 'character-oracle', 'icon');
         button.dataset.tooltip = "Generate tarot-based personality";
         // Handle the button click event
-        button.dataset.action = "showForm";
+        button.dataset.action = "showOracleForm";
         console.log("[Character Oracle] App V2 button:", button);
-        app.options.actions.showForm ??= function (_event, _el) {
-            game.hyp3eCharacterOracle?.showForm(app.actor);
+        app.options.actions.showOracleForm ??= function (_event, _el) {
+            game.hyp3eCharacterOracle?.showOracleForm(app.actor);
         };
     } else {
         // Configure the button for AppV1
@@ -201,7 +201,7 @@ function addOracleButton(app, html) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
-            game.hyp3eCharacterOracle?.showForm(app.actor);
+            game.hyp3eCharacterOracle?.showOracleForm(app.actor);
         });
     }
 
