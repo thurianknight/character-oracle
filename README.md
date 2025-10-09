@@ -62,7 +62,7 @@ You’ll see a temporary overlay while the oracle is consulted. Within a few sec
 ## Development Status
 
 - ✅ Core features complete and working in Hyperborea system (`hyp3e`).
-  - ✅ Additionally tested with Adventurer-Conqueror-King System (`acks`), Worlds Without Number (`wwn`), Old School Essentials (`ose`), and Pathfinder 2nd Edition (`pf2e`).
+  - ✅ Additionally tested with D&D 5e (`dnd5e`), Adventurer-Conqueror-King System (`acks`), Worlds Without Number (`wwn`), Old School Essentials (`ose`), and Pathfinder 2nd Edition (`pf2e`).
 - 🚧 Localization planned.
 - 💬 Accepting feedback and suggestions via GitHub issues.
 
