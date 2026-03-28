@@ -30,7 +30,7 @@ Hooks.once("init", () => {
   });
   game.settings.register("character-oracle", "openaiModel", {
     name: "OpenAI Model",
-    hint: "Model to use with the OpenAI API (e.g., gpt-3.5-turbo, gpt-4o-mini, gpt-4.1-nano)",
+    hint: "Model to use with the OpenAI API (e.g., gpt-3.5-turbo, gpt-4o-mini, etc.)",
     scope: "world",
     config: true,
     type: String,
