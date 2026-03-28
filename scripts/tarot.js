@@ -37,7 +37,8 @@ Hooks.once("init", () => {
         choices: {
             "gpt-3.5-turbo": "gpt-3.5-turbo (Fast, Low Cost)",
             "gpt-4o-mini": "gpt-4o-mini (Faster GPT-4, Recommended)",
-            "gpt-4.1-nano": "gpt-4.1 (Fastest, most cost-effective GPT-4.1 model)"
+            "gpt-4.1-nano": "gpt-4.1 (Fastest, most cost-effective GPT-4.1 model)",
+            "gpt-5.4-nano": "gpt-5.4-nano (Cheapest 5.4-class model)"
         },
         default: "gpt-3.5-turbo"
     });
